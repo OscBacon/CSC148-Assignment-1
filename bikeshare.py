@@ -78,14 +78,14 @@ class Station(Drawable):
         self.num_bikes = num_bikes
         self.name = name
 
-    def get_position(self, time: datetime) -> Tuple[float, float]:
-        """Return the (long, lat) position of this station for the given time.
+        def get_position(self, time: datetime) -> Tuple[float, float]:
+            """Return the (lat, long) position of this station for the given time.
 
-        Note that the station's location does *not* change over time.
-        The <time> parameter is included only because we should not change
-        the header of an overridden method.
-        """
-        pass
+            Note that the station's location does *not* change over time.
+            The <time> parameter is included only because we should not change
+            the header of an overridden method.
+            """
+            return self.location
 
 
 class Ride(Drawable):
@@ -117,12 +117,25 @@ class Ride(Drawable):
         self.start_time, self.end_time = times[0], times[1]
 
     def get_position(self, time: datetime) -> Tuple[float, float]:
-        """Return the (long, lat) position of this ride for the given time.
+        """Return the position of this ride for the given time.
 
         A ride travels in a straight line between its start and end stations
         at a constant speed.
         """
-        pass
+        # Calculate the distance between both stations
+        distance_x = abs(self.start.get_position(time)[0] - self.end.get_position(time)[0])
+        distance_y = abs(self.start.get_position(time)[1] - self.end.get_position(time)[1])
+
+        # Calculate what fraction of the trip has been done
+        fraction_traveled = (time - self.start_time).total_seconds() / (
+            self.end_time - self.start_time).total_seconds()
+
+        # Calculate current position by adding start position and the distance
+        # multiplied by the fraction of the trip that has been done at specified
+        # time
+        pos_x = self.start.get_position(time)[0] + distance_x * fraction_traveled
+        pos_y = self.start.get_position(time)[1] + distance_y * fraction_traveled
+        return (pos_x, pos_y)
 
 
 if __name__ == '__main__':
