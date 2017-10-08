@@ -164,7 +164,7 @@ def create_stations(stations_file: str) -> Dict[str, 'Station']:
         # NOTE: all of the corresponding values are strings, and so you
         # need to convert some of them to numbers explicitly using int()
         # or float().
-        stations[int(s['n'])] = Station((float(s['lo']),
+        stations[s['n']] = Station((float(s['lo']),
                                              float(s['la'])),
                                             int(s['ba']) + int(s['da']),
                                             int(s['da']), s['s'])
@@ -195,10 +195,12 @@ def create_rides(rides_file: str,
             # constant we defined above. Example:
             # >>> datetime.strptime('2017-06-01 8:00', DATETIME_FORMAT)
             # datetime.datetime(2017, 6, 1, 8, 0)
+
             if line[1] in stations and line[3] in stations:
                 rides.append(Ride(stations[line[1]], stations[line[3]],
                 (datetime.strptime(line[0], DATETIME_FORMAT),
                 datetime.strptime(line[2], DATETIME_FORMAT))))
+    print(rides)
     return rides
 
 
