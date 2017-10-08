@@ -83,12 +83,12 @@ class Simulation:
         -   Loop through `self.all_rides` and compare each Ride's start and
             end times with <time>.
 
-            If <time> is between the ride's start and end times
-            (inclusive), then add the ride to self.active_rides if it isn't already in
-            that list.
+            If <time> is between the ride's start and end times (inclusive),
+            then add the ride to self.active_rides if it isn't already in that
+            list.
 
-            Otherwise, remove the ride from self.active_rides if it is in
-            that list.
+            Otherwise, remove the ride from self.active_rides if it is in that
+            list.
 
         -   This means that if a ride started before the simulation's time
             period but ends during or after the simulation's time period,
@@ -164,10 +164,9 @@ def create_stations(stations_file: str) -> Dict[str, 'Station']:
         # NOTE: all of the corresponding values are strings, and so you
         # need to convert some of them to numbers explicitly using int()
         # or float().
-        stations[s['n']] = Station((float(s['lo']),
-                                             float(s['la'])),
-                                            int(s['ba']) + int(s['da']),
-                                            int(s['da']), s['s'])
+        stations[s['n']] = Station((float(s['lo']), float(s['la'])),
+                                   int(s['ba']) + int(s['da']), int(s['da']),
+                                   s['s'])
     return stations
 
 
@@ -198,8 +197,9 @@ def create_rides(rides_file: str,
 
             if line[1] in stations and line[3] in stations:
                 rides.append(Ride(stations[line[1]], stations[line[3]],
-                (datetime.strptime(line[0], DATETIME_FORMAT),
-                datetime.strptime(line[2], DATETIME_FORMAT))))
+                                  (datetime.strptime(line[0], DATETIME_FORMAT),
+                                   datetime.strptime(line[2], DATETIME_FORMAT)))
+                             )
     print(rides)
     return rides
 
@@ -214,8 +214,8 @@ class Event:
 
     def __init__(self, simulation: 'Simulation', time: datetime) -> None:
         """Initialize a new event."""
-        self.simulation=simulation
-        self.time=time
+        self.simulation = simulation
+        self.time = time
 
     def __lt__(self, other: 'Event') -> bool:
         """Return whether this event is less than <other>.
@@ -244,7 +244,7 @@ class RideEndEvent(Event):
 
 def sample_simulation() -> Dict[str, Tuple[str, float]]:
     """Run a sample simulation. For testing purposes only."""
-    sim=Simulation('stations.json', 'sample_rides.csv')
+    sim = Simulation('stations.json', 'sample_rides.csv')
     sim.run(datetime(2017, 6, 1, 8, 0, 0),
             datetime(2017, 6, 1, 9, 0, 0))
     return sim.calculate_statistics()
@@ -252,13 +252,13 @@ def sample_simulation() -> Dict[str, Tuple[str, float]]:
 
 if __name__ == '__main__':
     # Uncomment these lines when you want to check your work using python_ta!
-    # import python_ta
-    # python_ta.check_all(config={
-    #     'allowed-io': ['create_stations', 'create_rides'],
-    #     'allowed-import-modules': [
-    #         'doctest', 'python_ta', 'typing',
-    #         'csv', 'datetime', 'json',
-    #         'bikeshare', 'container', 'visualizer'
-    #     ]
-    # })
+    import python_ta
+    python_ta.check_all(config={
+        'allowed-io': ['create_stations', 'create_rides'],
+        'allowed-import-modules': [
+            'doctest', 'python_ta', 'typing',
+            'csv', 'datetime', 'json',
+            'bikeshare', 'container', 'visualizer'
+        ]
+    })
     print(sample_simulation())

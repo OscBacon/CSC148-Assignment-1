@@ -127,8 +127,11 @@ class Ride(Drawable):
         # Calculate the distance between both stations
         # Note: distance is not absolute to take into account
         # direction
-        distance_x = self.start.get_position(time)[0] - self.end.get_position(time)[0]
-        distance_y = self.start.get_position(time)[1] - self.end.get_position(time)[1]
+        distance_x = self.start.get_position(time)[0] - \
+                     self.end.get_position(time)[0]
+
+        distance_y = self.start.get_position(time)[1] - \
+                     self.end.get_position(time)[1]
 
         # Calculate what fraction of the trip has been done
         fraction_traveled = (time - self.start_time).total_seconds() / (
@@ -137,8 +140,10 @@ class Ride(Drawable):
         # Calculate current position by adding start position and the distance
         # multiplied by the fraction of the trip that has been done at specified
         # time
-        pos_x = self.start.get_position(time)[0] + distance_x * fraction_traveled
-        pos_y = self.start.get_position(time)[1] + distance_y * fraction_traveled
+        pos_x = self.start.get_position(time)[0] + distance_x *\
+                                                   fraction_traveled
+        pos_y = self.start.get_position(time)[1] + distance_y *\
+                                                   fraction_traveled
         return (pos_x, pos_y)
 
 
