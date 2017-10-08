@@ -200,7 +200,6 @@ def create_rides(rides_file: str,
                                   (datetime.strptime(line[0], DATETIME_FORMAT),
                                    datetime.strptime(line[2], DATETIME_FORMAT)))
                              )
-    print(rides)
     return rides
 
 
