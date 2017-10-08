@@ -58,6 +58,15 @@ class Station(Drawable):
         name of the station
     num_bikes: int
         current number of bikes at the station
+    # Stats attibutes for Task 4
+    num_bikes_started: int
+        number of bikes that started from this station
+    num_bikes_ended: int
+        number of bikes that ended in this station
+    total_amount_spent_with_5_bikes: int
+        total amount of time spent with 5 or more bikes at the station
+    total_amount_spent_with_5_spots: int
+        total amount of time spent with 5 or more empty spots at the station
 
     === Representation Invariants ===
     - 0 <= num_bikes <= capacity
@@ -117,6 +126,11 @@ class Ride(Drawable):
         self.start, self.end = start, end
         self.start_time, self.end_time = times[0], times[1]
         Drawable.__init__(self, RIDE_SPRITE)
+
+        # Increment the number of bikes that started in its start station by 1
+        start.num_bikes_started += 1
+        # Increment the number of bikes that started in its end station by 1
+        end.num_bikes_ended += 1
 
     def get_position(self, time: datetime) -> Tuple[float, float]:
         """Return the position of this ride for the given time.
