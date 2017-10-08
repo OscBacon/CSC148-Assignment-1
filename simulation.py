@@ -69,7 +69,8 @@ class Simulation:
                 time = start
 
             self._update_active_rides(time)
-            rides_stations = list(self.all_stations.values()) + self.active_rides
+            rides_stations = list(
+                self.all_stations.values()) + self.active_rides
 
             self.visualizer.render_drawables(rides_stations, time)
             if self.visualizer.handle_window_events():
@@ -82,8 +83,8 @@ class Simulation:
         -   Loop through `self.all_rides` and compare each Ride's start and
             end times with <time>.
 
-            If <time> is between the ride's start and end times (inclusive),
-            then add the ride to self.active_rides if it isn't already in
+            If <time> is between the ride's start and end times
+            (inclusive), then add the ride to self.active_rides if it isn't already in
             that list.
 
             Otherwise, remove the ride from self.active_rides if it is in
@@ -112,13 +113,14 @@ class Simulation:
           - 'max_time_low_unoccupied'
 
         The corresponding value of each key is a tuple of two elements,
-        where the first element is the name (NOT id) of the station that has
-        the maximum value of the quantity specified by that key,
+        where the first element is the name (NOT id) of the station that
+        has the maximum value of the quantity specified by that key,
         and the second element is the value of that quantity.
 
-        For example, the value corresponding to key 'max_start' should be the
-        name of the station with the most number of rides started at that
-        station, and the number of rides that started at that station.
+        For example, the value corresponding to key 'max_start' should be
+        the name of the station with the most number of rides started at
+        that station, and the number of rides that started at that
+        station.
         """
         return {
             'max_start': ('', -1),
@@ -128,7 +130,8 @@ class Simulation:
         }
 
     def _update_active_rides_fast(self, time: datetime) -> None:
-        """Update this simulation's list of active rides for the given time.
+        """Update this simulation's list of active rides for the given
+        time.
 
         REQUIRED IMPLEMENTATION NOTES:
         -   see Task 5 of the assignment handout
@@ -156,10 +159,11 @@ def create_stations(stations_file: str) -> Dict[str, 'Station']:
     stations = {}
     for s in raw_stations['stations']:
         # Extract the relevant fields from the raw station JSON.
-        # s is a dictionary with the keys 'n', 's', 'la', 'lo', 'da', and 'ba'
-        # as described in the assignment handout.
-        # NOTE: all of the corresponding values are strings, and so you need
-        # to convert some of them to numbers explicitly using int() or float().
+        # s is a dictionary with the keys 'n', 's', 'la', 'lo', 'da', and
+        # 'ba' as described in the assignment handout.
+        # NOTE: all of the corresponding values are strings, and so you
+        # need to convert some of them to numbers explicitly using int()
+        # or float().
         stations[int(s['n'])] = Station((float(s['lo']),
                                              float(s['la'])),
                                             int(s['ba']) + int(s['da']),
@@ -174,7 +178,8 @@ def create_rides(rides_file: str,
     Lookup the station ids contained in the rides file in <stations>
     to access the corresponding Station objects.
 
-    Ignore any ride whose start or end station is not present in <stations>.
+    Ignore any ride whose start or end station is not present in
+    <stations>.
 
     Precondition: rides_file matches the format specified in the
                   assignment handout.
@@ -192,9 +197,10 @@ def create_rides(rides_file: str,
             # datetime.datetime(2017, 6, 1, 8, 0)
             if line[1] in stations and line[3] in stations:
                 rides.append(Ride(stations[line[1]], stations[line[3]],
-                                  (datetime.strptime(line[0], DATETIME_FORMAT),
-                                   datetime.strptime(line[2], DATETIME_FORMAT)))
-                             )
+                                  (datetime.strptime(line[0],
+                                  DATETIME_FORMAT),
+                                   datetime.strptime(line[2],
+                                   DATETIME_FORMAT)))
     return rides
 
 
@@ -208,8 +214,8 @@ class Event:
 
     def __init__(self, simulation: 'Simulation', time: datetime) -> None:
         """Initialize a new event."""
-        self.simulation = simulation
-        self.time = time
+        self.simulation=simulation
+        self.time=time
 
     def __lt__(self, other: 'Event') -> bool:
         """Return whether this event is less than <other>.
@@ -238,7 +244,7 @@ class RideEndEvent(Event):
 
 def sample_simulation() -> Dict[str, Tuple[str, float]]:
     """Run a sample simulation. For testing purposes only."""
-    sim = Simulation('stations.json', 'sample_rides.csv')
+    sim=Simulation('stations.json', 'sample_rides.csv')
     sim.run(datetime(2017, 6, 1, 8, 0, 0),
             datetime(2017, 6, 1, 9, 0, 0))
     return sim.calculate_statistics()
