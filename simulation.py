@@ -170,11 +170,11 @@ class Simulation:
                 # constant we defined above. Example:
                 # >>> datetime.strptime('2017-06-01 8:00', DATETIME_FORMAT)
                 # datetime.datetime(2017, 6, 1, 8, 0)
-                rides.append(Ride(stations.all_stations[line[1]],
-                                  stations.all_stations[line[3]],
-                                  (datetime.strptime(line[0], DATETIME_FORMAT),
-                                   datetime.strptime(line[2], DATETIME_FORMAT))))
-
+                if line[1] in stations and line[3] in stations:
+                    rides.append(Ride(stations[line[1]], stations[line[3]],
+                                      (datetime.strptime(line[0], DATETIME_FORMAT),
+                                       datetime.strptime(line[2], DATETIME_FORMAT)))
+                                 )
         return rides
 
 
