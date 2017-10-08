@@ -77,6 +77,7 @@ class Station(Drawable):
         self.capacity = cap
         self.num_bikes = num_bikes
         self.name = name
+        Drawable.__init__(self, STATION_SPRITE)
 
     def get_position(self, time: datetime) -> Tuple[float, float]:
         """Return the (lat, long) position of this station for the given time.
@@ -115,6 +116,7 @@ class Ride(Drawable):
         """
         self.start, self.end = start, end
         self.start_time, self.end_time = times[0], times[1]
+        Drawable.__init__(self, RIDE_SPRITE)
 
     def get_position(self, time: datetime) -> Tuple[float, float]:
         """Return the position of this ride for the given time.
