@@ -127,6 +127,10 @@ class Ride(Drawable):
         self.start_time, self.end_time = times[0], times[1]
         Drawable.__init__(self, RIDE_SPRITE)
 
+        #These wont work for when the bike starts before the start time or ends
+        #Before the end time, because if those happen we not supposed to update
+        #The given stats for that bike that happen outside of the timeframe
+        
         # Increment the number of bikes that started in its start station by 1
         start.num_bikes_started += 1
         # Increment the number of bikes that started in its end station by 1
