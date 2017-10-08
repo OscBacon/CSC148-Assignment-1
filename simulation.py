@@ -197,10 +197,8 @@ def create_rides(rides_file: str,
             # datetime.datetime(2017, 6, 1, 8, 0)
             if line[1] in stations and line[3] in stations:
                 rides.append(Ride(stations[line[1]], stations[line[3]],
-                                  (datetime.strptime(line[0],
-                                  DATETIME_FORMAT),
-                                   datetime.strptime(line[2],
-                                   DATETIME_FORMAT)))
+                (datetime.strptime(line[0], DATETIME_FORMAT),
+                datetime.strptime(line[2], DATETIME_FORMAT))))
     return rides
 
 
