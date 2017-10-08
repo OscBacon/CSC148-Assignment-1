@@ -136,66 +136,66 @@ class Simulation:
         pass
 
 
-    def create_stations(stations_file: str) -> Dict[str, 'Station']:
-        """Return the stations described in the given JSON data file.
+def create_stations(stations_file: str) -> Dict[str, 'Station']:
+    """Return the stations described in the given JSON data file.
 
-        Each key in the returned dictionary is a station id,
-        and each value is the corresponding Station object.
-        Note that you need to call Station(...) to create these objects!
+    Each key in the returned dictionary is a station id,
+    and each value is the corresponding Station object.
+    Note that you need to call Station(...) to create these objects!
 
-        Precondition: stations_file matches the format specified in the
-                      assignment handout.
+    Precondition: stations_file matches the format specified in the
+                  assignment handout.
 
-        This function should be called *before* _read_rides because the
-        rides CSV file refers to station ids.
-        """
-        # Read in raw data using the json library.
-        with open(stations_file) as file:
-            raw_stations = json.load(file)
+    This function should be called *before* _read_rides because the
+    rides CSV file refers to station ids.
+    """
+    # Read in raw data using the json library.
+    with open(stations_file) as file:
+        raw_stations = json.load(file)
 
-        stations = {}
-        for s in raw_stations['stations']:
-            # Extract the relevant fields from the raw station JSON.
-            # s is a dictionary with the keys 'n', 's', 'la', 'lo', 'da', and 'ba'
-            # as described in the assignment handout.
-            # NOTE: all of the corresponding values are strings, and so you need
-            # to convert some of them to numbers explicitly using int() or float().
-            stations[int(s['n'])] = Station((float(s['lo']),
-                                                 float(s['la'])),
-                                                int(s['ba']) + int(s['da']),
-                                                int(s['da']), s['s'])
-        return stations
+    stations = {}
+    for s in raw_stations['stations']:
+        # Extract the relevant fields from the raw station JSON.
+        # s is a dictionary with the keys 'n', 's', 'la', 'lo', 'da', and 'ba'
+        # as described in the assignment handout.
+        # NOTE: all of the corresponding values are strings, and so you need
+        # to convert some of them to numbers explicitly using int() or float().
+        stations[int(s['n'])] = Station((float(s['lo']),
+                                             float(s['la'])),
+                                            int(s['ba']) + int(s['da']),
+                                            int(s['da']), s['s'])
+    return stations
 
 
-    def create_rides(rides_file: str,
-                     stations: Dict[str, 'Station']) -> List['Ride']:
-        """Return the rides described in the given CSV file.
+def create_rides(rides_file: str,
+                 stations: Dict[str, 'Station']) -> List['Ride']:
+    """Return the rides described in the given CSV file.
 
-        Lookup the station ids contained in the rides file in <stations>
-        to access the corresponding Station objects.
+    Lookup the station ids contained in the rides file in <stations>
+    to access the corresponding Station objects.
 
-        Ignore any ride whose start or end station is not present in <stations>.
+    Ignore any ride whose start or end station is not present in <stations>.
 
-        Precondition: rides_file matches the format specified in the
-                      assignment handout.
-        """
-        rides = []
-        with open(rides_file) as file:
-            for line in csv.reader(file):
-                # line is a list of strings, following the format described
-                # in the assignment handout.
-                #
-                # Convert between a string and a datetime object
-                # using the function datetime.strptime and the DATETIME_FORMAT
-                # constant we defined above. Example:
-                # >>> datetime.strptime('2017-06-01 8:00', DATETIME_FORMAT)
-                # datetime.datetime(2017, 6, 1, 8, 0)
-                if line[1] in stations and line[3] in stations:
-                    rides.append(Ride(stations[line[1]], stations[line[3]],
-                                      (datetime.strptime(line[0], DATETIME_FORMAT),
-                                       datetime.strptime(line[2], DATETIME_FORMAT)))
-                                 )
-        return rides
+    Precondition: rides_file matches the format specified in the
+                  assignment handout.
+    """
+    rides = []
+    with open(rides_file) as file:
+        for line in csv.reader(file):
+            # line is a list of strings, following the format described
+            # in the assignment handout.
+            #
+            # Convert between a string and a datetime object
+            # using the function datetime.strptime and the DATETIME_FORMAT
+            # constant we defined above. Example:
+            # >>> datetime.strptime('2017-06-01 8:00', DATETIME_FORMAT)
+            # datetime.datetime(2017, 6, 1, 8, 0)
+            if line[1] in stations and line[3] in stations:
+                rides.append(Ride(stations[line[1]], stations[line[3]],
+                                  (datetime.strptime(line[0], DATETIME_FORMAT),
+                                   datetime.strptime(line[2], DATETIME_FORMAT)))
+                             )
+    return rides
 
 
 class Event:
