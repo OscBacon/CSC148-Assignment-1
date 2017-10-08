@@ -78,14 +78,14 @@ class Station(Drawable):
         self.num_bikes = num_bikes
         self.name = name
 
-        def get_position(self, time: datetime) -> Tuple[float, float]:
-            """Return the (lat, long) position of this station for the given time.
+    def get_position(self, time: datetime) -> Tuple[float, float]:
+        """Return the (lat, long) position of this station for the given time.
 
-            Note that the station's location does *not* change over time.
-            The <time> parameter is included only because we should not change
-            the header of an overridden method.
-            """
-            return self.location
+        Note that the station's location does *not* change over time.
+        The <time> parameter is included only because we should not change
+        the header of an overridden method.
+        """
+        return self.location
 
 
 class Ride(Drawable):
