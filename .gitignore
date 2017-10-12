@@ -51,3 +51,6 @@ __pycache__
 
 #PyTa output
 output.html
+
+# PyCharm
+*.xml

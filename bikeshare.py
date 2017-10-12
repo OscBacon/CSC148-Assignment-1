@@ -134,6 +134,7 @@ class Ride(Drawable):
         self.start_time, self.end_time = times[0], times[1]
         Drawable.__init__(self, RIDE_SPRITE)
 
+
     def get_position(self, time: datetime) -> Tuple[float, float]:
         """Return the position of this ride for the given time.
 
