@@ -122,8 +122,28 @@ class Simulation:
         that station, and the number of rides that started at that
         station.
         """
+
+        max_start = ('', 0)
+        # Uncomment (1), (2) and (3) to check if choice is done alphabetically
+        for station in self.all_stations:
+            num_bikes_start = self.all_stations[station].num_bikes_start
+            station_name = self.all_stations[station].name
+            if num_bikes_start > max_start[1]:
+                max_start = (station_name, num_bikes_start)
+            elif num_bikes_start == max_start[1]:
+                #(1) print(f'current name: {max_start[1]}, considering name: '
+                      #(2) f'{station_name}')
+                if max_start[0].lower() < station_name.lower():
+                    max_start = (station_name, num_bikes_start)
+                    #(3) print(f'chose name: {max_start[1]}')
+
+        # max_end = max([stations_lst[i].num_bikes_end for i in stations_lst])
+        # max_end_name = stations_lst[stations_lst.index(max_end)].name
+
         return {
-            'max_start': ('', -1),
+            'max_start': max_start,
+            # 'max_end': (stations_lst[stations_lst.index(max_end)],
+            #               max_end),
             'max_end': ('', -1),
             'max_time_low_availability': ('', -1),
             'max_time_low_unoccupied': ('', -1)
@@ -198,8 +218,8 @@ def create_rides(rides_file: str,
             if line[1] in stations and line[3] in stations:
                 rides.append(Ride(stations[line[1]], stations[line[3]],
                                   (datetime.strptime(line[0], DATETIME_FORMAT),
-                                   datetime.strptime(line[2], DATETIME_FORMAT)))
-                             )
+                                   datetime.strptime(line[2],
+                                                     DATETIME_FORMAT))))
     return rides
 
 

@@ -59,10 +59,10 @@ class Station(Drawable):
     num_bikes: int
         current number of bikes at the station
     # Stats attibutes for Task 4
-    num_bikes_started: int
-        number of bikes that started from this station
-    num_bikes_ended: int
-        number of bikes that ended in this station
+    num_bikes_start: int
+        bikes that started from this station
+    num_bikes_end: int
+        bikes that ended in this station
     total_amount_spent_with_5_bikes: int
         total amount of time spent with 5 or more bikes at the station
     total_amount_spent_with_5_spots: int
@@ -75,6 +75,10 @@ class Station(Drawable):
     location: Tuple[float, float]
     capacity: int
     num_bikes: int
+    num_bikes_start: int
+    num_bikes_end: int
+    total_amount_spent_with_5_bikes: int
+    total_amount_spent_with_5_spots: int
 
     def __init__(self, pos: Tuple[float, float], cap: int,
                  num_bikes: int, name: str) -> None:
@@ -84,8 +88,11 @@ class Station(Drawable):
         """
         self.location = pos
         self.capacity = cap
-        self.num_bikes = num_bikes
         self.name = name
+        self.num_bikes = num_bikes
+        self.num_bikes_start = num_bikes
+        self.total_amount_spent_with_5_bikes = 0
+        self.total_amount_spent_with_5_spots = 0
         Drawable.__init__(self, STATION_SPRITE)
 
     def get_position(self, time: datetime) -> Tuple[float, float]:
@@ -126,11 +133,6 @@ class Ride(Drawable):
         self.start, self.end = start, end
         self.start_time, self.end_time = times[0], times[1]
         Drawable.__init__(self, RIDE_SPRITE)
-
-        # Increment the number of bikes that started in its start station by 1
-        start.num_bikes_started += 1
-        # Increment the number of bikes that started in its end station by 1
-        end.num_bikes_ended += 1
 
     def get_position(self, time: datetime) -> Tuple[float, float]:
         """Return the position of this ride for the given time.
