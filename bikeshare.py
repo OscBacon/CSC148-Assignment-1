@@ -114,7 +114,8 @@ class Station(Drawable):
         if self.capacity - self.num_bikes <= 5:
             self.total_time_low_unoccupied += 60
 
-
+    def check_end_bikes(self):
+        self.num_bikes_end = self.num_bikes
 
 class Ride(Drawable):
     """A ride using a Bixi bike.

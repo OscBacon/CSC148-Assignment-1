@@ -66,16 +66,20 @@ class Simulation:
         while time < end:
             time += step
 
-            self._update_active_rides(time)
-            rides_stations = list(
-                self.all_stations.values()) + self.active_rides
-
             for station in self.all_stations:
                 self.all_stations[station].check_space()
+
+            self._update_active_rides(time)
+
+            rides_stations = list(
+                self.all_stations.values()) + self.active_rides
 
             self.visualizer.render_drawables(rides_stations, time)
             if self.visualizer.handle_window_events():
                 return  # Stop the simulation
+
+        for station in self.all_stations:
+            self.all_stations[station].check_end_bikes()
         return
 
     def _update_active_rides(self, time: datetime) -> None:
@@ -100,9 +104,21 @@ class Simulation:
             if ride.start_time <= time <= ride.end_time:
                 self.active_rides.append(ride)
 
-        for index, ride in enumerate(self.active_rides):
+        for ride in self.active_rides:
             if ride.start_time > time or ride.end_time < time:
-                self.active_rides.pop(index)
+                self.active_rides.remove(ride)
+
+        for bike in self.active_rides:
+            if time == bike.start_time:
+                if bike.start.num_bikes > 0:
+                    bike.start.num_bikes -= 1
+                else:
+                    self.active_rides.remove(bike)
+            if time == bike.end_time:
+                if bike.end.capacity > bike.end.num_bikes:
+                    bike.end.num_bikes += 1
+                else:
+                    self.active_rides.remove(bike)
 
     def _find_max (self, value: str):
         stations = self.all_stations
@@ -121,11 +137,8 @@ class Simulation:
             if station_attribute > maximum[1]:
                 maximum = (stations[key].name, station_attribute)
             elif station_attribute == maximum[1]:
-                #(1) print(f'current name: {max[1]}, considering name: '
-                #(2) f'{list[key].name}')
                 if stations[key].name.lower() < maximum[0].lower():
                     maximum = (stations[key].name, station_attribute)
-                    #(3) print(f'chose name: {max[1]}')
 
         return maximum
 
@@ -160,9 +173,9 @@ class Simulation:
             'max_start': max_start,
             # 'max_end': (stations_lst[stations_lst.index(max_end)],
             #               max_end),
-            'max_end': ('', -1),
-            'max_time_low_availability': ('', -1),
-            'max_time_low_unoccupied': ('', -1)
+            'max_end': max_end,
+            'max_time_low_availability': max_time_low_availability,
+            'max_time_low_unoccupied': max_time_low_unoccupied
         }
 
     def _update_active_rides_fast(self, time: datetime) -> None:
