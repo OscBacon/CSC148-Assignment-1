@@ -102,6 +102,31 @@ class Simulation:
             if ride.start_time > time or ride.end_time < time:
                 self.active_rides.pop(index)
 
+    def _find_max (self, value: str):
+        stations = self.all_stations
+        maximum = ('', 0)
+
+        for key in stations:
+            if value == 'num_bikes_start':
+                station_attribute = stations[key].num_bikes_start
+            elif value == 'num_bikes_end':
+                station_attribute = stations[key].num_bikes_end
+            elif value == 'total_time_low_availability':
+                station_attribute = stations[key].total_time_low_availability
+            elif value == 'total_time_low_unoccupied':
+                station_attribute = stations[key].total_time_low_unoccupied
+
+            if station_attribute > maximum[1]:
+                maximum = (stations[key].name, station_attribute)
+            elif station_attribute == maximum[1]:
+                #(1) print(f'current name: {max[1]}, considering name: '
+                #(2) f'{list[key].name}')
+                if stations[key].name.lower() < maximum[0].lower():
+                    maximum = (stations[key].name, station_attribute)
+                    #(3) print(f'chose name: {max[1]}')
+
+        return maximum
+
     def calculate_statistics(self) -> Dict[str, Tuple[str, float]]:
         """Return a dictionary containing statistics for this simulation.
 
@@ -123,22 +148,11 @@ class Simulation:
         station.
         """
 
-        max_start = ('', 0)
-        # Uncomment (1), (2) and (3) to check if choice is done alphabetically
-        for station in self.all_stations:
-            num_bikes_start = self.all_stations[station].num_bikes_start
-            station_name = self.all_stations[station].name
-            if num_bikes_start > max_start[1]:
-                max_start = (station_name, num_bikes_start)
-            elif num_bikes_start == max_start[1]:
-                #(1) print(f'current name: {max_start[1]}, considering name: '
-                      #(2) f'{station_name}')
-                if max_start[0].lower() < station_name.lower():
-                    max_start = (station_name, num_bikes_start)
-                    #(3) print(f'chose name: {max_start[1]}')
+        max_start = self._find_max('num_bikes_start')
+        max_end = self._find_max('num_bikes_end')
+        max_time_low_availability = self._find_max('total_time_low_availability')
+        max_time_low_unoccupied = self._find_max('total_time_low_unoccupied')
 
-        # max_end = max([stations_lst[i].num_bikes_end for i in stations_lst])
-        # max_end_name = stations_lst[stations_lst.index(max_end)].name
 
         return {
             'max_start': max_start,

@@ -63,9 +63,9 @@ class Station(Drawable):
         bikes that started from this station
     num_bikes_end: int
         bikes that ended in this station
-    total_amount_spent_with_5_bikes: int
+    total_time_low_availability: int
         total amount of time spent with 5 or more bikes at the station
-    total_amount_spent_with_5_spots: int
+    total_time_low_unoccupied: int
         total amount of time spent with 5 or more empty spots at the station
 
     === Representation Invariants ===
@@ -77,8 +77,8 @@ class Station(Drawable):
     num_bikes: int
     num_bikes_start: int
     num_bikes_end: int
-    total_amount_spent_with_5_bikes: int
-    total_amount_spent_with_5_spots: int
+    total_time_low_availability: int
+    total_time_low_unoccupied: int
 
     def __init__(self, pos: Tuple[float, float], cap: int,
                  num_bikes: int, name: str) -> None:
@@ -91,8 +91,9 @@ class Station(Drawable):
         self.name = name
         self.num_bikes = num_bikes
         self.num_bikes_start = num_bikes
-        self.total_amount_spent_with_5_bikes = 0
-        self.total_amount_spent_with_5_spots = 0
+        self.num_bikes_end = 0
+        self.total_time_low_availability = 0
+        self.total_time_low_unoccupied = 0
         Drawable.__init__(self, STATION_SPRITE)
 
     def get_position(self, time: datetime) -> Tuple[float, float]:
