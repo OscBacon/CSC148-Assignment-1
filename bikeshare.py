@@ -110,9 +110,9 @@ class Station(Drawable):
         or 5 spots
         """
         if self.num_bikes <= 5:
-            self.total_time_spent_with_5_bikes += 60
+            self.total_time_low_availability += 60
         if self.capacity - self.num_bikes <= 5:
-            self.total_time_spent_with_5_spots += 60
+            self.total_time_low_unoccupied += 60
 
 
 
