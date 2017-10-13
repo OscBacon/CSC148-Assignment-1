@@ -62,19 +62,21 @@ class Simulation:
         # It will keep the visualization window open until you close
         # it by pressing the 'X'.
         time = start
-        while True:
-            if time < end:
-                time += step
-            else:
-                time = start
+
+        while time < end:
+            time += step
 
             self._update_active_rides(time)
             rides_stations = list(
                 self.all_stations.values()) + self.active_rides
 
+            for station in self.all_stations:
+                self.all_stations[station].check_space()
+
             self.visualizer.render_drawables(rides_stations, time)
             if self.visualizer.handle_window_events():
                 return  # Stop the simulation
+        return
 
     def _update_active_rides(self, time: datetime) -> None:
         """Update this simulation's list of active rides for the given time.

@@ -104,6 +104,16 @@ class Station(Drawable):
         """
         return self.location
 
+    def check_space(self) -> None:
+        """Function called to increment number of time spent with with 5 bikes
+        or 5 spots
+        """
+        if self.num_bikes <= 5:
+            self.total_time_spent_with_5_bikes += 60
+        if self.capacity - self.num_bikes <= 5:
+            self.total_time_spent_with_5_spots += 60
+
+
 
 class Ride(Drawable):
     """A ride using a Bixi bike.
