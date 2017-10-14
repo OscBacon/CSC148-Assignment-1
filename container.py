@@ -74,7 +74,12 @@ class PriorityQueue(Container[T]):
         NOTE: See the docstring for the 'remove' method for a sample doctest.
         """
         # TODO: Implement this method!
-        pass
+        for index, event in enumerate(self._queue):
+            if item > event:
+                self._queue.insert(index, item)
+                return
+        self._queue.append(item)
+        return
 
     def remove(self) -> T:
         """Remove and return the next item from this PriorityQueue.
@@ -111,11 +116,11 @@ class PriorityQueue(Container[T]):
 
 
 if __name__ == '__main__':
-    # import doctest
-    # doctest.testmod()
-    import python_ta
-    python_ta.check_all(config={
-        'allowed-import-modules': [
-            'doctest', 'python_ta', 'typing'
-        ],
-    })
+    import doctest
+    doctest.testmod()
+    # import python_ta
+    # python_ta.check_all(config={
+    #     'allowed-import-modules': [
+    #         'doctest', 'python_ta', 'typing'
+    #     ],
+    # })
