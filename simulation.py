@@ -314,6 +314,7 @@ class RideStartEvent(Event):
 
     def __init__(self, simulation: 'Simulation', time: datetime, ride: 'Ride') \
             -> None:
+        """Initialize a new event."""
         Event.__init__(self, simulation, time)
         self.ride = ride
 
@@ -329,6 +330,7 @@ class RideEndEvent(Event):
 
     def __init__(self, simulation: 'Simulation', time: datetime, ride: 'Ride') \
             -> None:
+        """Initialize a new event."""
         Event.__init__(self, simulation, time)
         self.ride = ride
 
