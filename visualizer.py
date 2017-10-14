@@ -204,13 +204,13 @@ class Map:
         return pygame.transform.smoothscale(mapsegment, self.screensize)
 
 
-if __name__ == '__main__':
-    import python_ta
-    python_ta.check_all(config={
-        'allowed-import-modules': [
-            'doctest', 'python_ta', 'typing',
-            'datetime', 'os', 'pygame',
-            'bikeshare'
-        ],
-        'generated-members': 'pygame.*'
-    })
+# if __name__ == '__main__':
+#     import python_ta
+#     python_ta.check_all(config={
+#         'allowed-import-modules': [
+#             'doctest', 'python_ta', 'typing',
+#             'datetime', 'os', 'pygame',
+#             'bikeshare'
+#         ],
+#         'generated-members': 'pygame.*'
+#     })

@@ -339,14 +339,14 @@ def sample_simulation() -> Dict[str, Tuple[str, float]]:
 
 if __name__ == '__main__':
     # Uncomment these lines when you want to check your work using python_ta!
-    import python_ta
-
-    python_ta.check_all(config={
-        'allowed-io': ['create_stations', 'create_rides'],
-        'allowed-import-modules': [
-            'doctest', 'python_ta', 'typing',
-            'csv', 'datetime', 'json',
-            'bikeshare', 'container', 'visualizer'
-        ]
-    })
+    # import python_ta
+    #
+    # python_ta.check_all(config={
+    #     'allowed-io': ['create_stations', 'create_rides'],
+    #     'allowed-import-modules': [
+    #         'doctest', 'python_ta', 'typing',
+    #         'csv', 'datetime', 'json',
+    #         'bikeshare', 'container', 'visualizer'
+    #     ]
+    # })
     print(sample_simulation())

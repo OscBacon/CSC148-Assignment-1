@@ -114,12 +114,12 @@ class PriorityQueue(Container[T]):
         return not self._queue
 
 
-if __name__ == '__main__':
-    import doctest
-    doctest.testmod()
-    # import python_ta
-    # python_ta.check_all(config={
-    #     'allowed-import-modules': [
-    #         'doctest', 'python_ta', 'typing'
-    #     ],
-    # })
+# if __name__ == '__main__':
+#     import doctest
+#     doctest.testmod()
+#     import python_ta
+#     python_ta.check_all(config={
+#         'allowed-import-modules': [
+#             'doctest', 'python_ta', 'typing'
+#         ],
+#     })

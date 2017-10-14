@@ -174,12 +174,12 @@ class Ride(Drawable):
         return (pos_x, pos_y)
 
 
-if __name__ == '__main__':
-    import python_ta
-    python_ta.check_all(config={
-        'allowed-import-modules': [
-            'doctest', 'python_ta', 'typing',
-            'datetime'
-        ],
-        'max-attributes': 15
-    })
+# if __name__ == '__main__':
+#     import python_ta
+#     python_ta.check_all(config={
+#         'allowed-import-modules': [
+#             'doctest', 'python_ta', 'typing',
+#             'datetime'
+#         ],
+#         'max-attributes': 15
+#     })
