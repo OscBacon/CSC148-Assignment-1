@@ -90,7 +90,7 @@ class Station(Drawable):
         self.capacity = cap
         self.name = name
         self.num_bikes = num_bikes
-        self.num_bikes_start = num_bikes
+        self.num_bikes_start = 0
         self.num_bikes_end = 0
         self.total_time_low_availability = 0
         self.total_time_low_unoccupied = 0

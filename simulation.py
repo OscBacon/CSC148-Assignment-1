@@ -64,9 +64,9 @@ class Simulation:
         # it by pressing the 'X'.
         time = start
 
-        for ride in self.all_rides:
-            if start < ride.start_time < end:
-                ride_priority_queue.add(RideStartEvent(self, ride.time, ride))
+        # for ride in self.all_rides:
+        #     if start < ride.start_time < end:
+        #         ride_priority_queue.add(RideStartEvent(self, ride.time, ride))
 
         while time < end:
             time += step
@@ -82,9 +82,6 @@ class Simulation:
             self.visualizer.render_drawables(rides_stations, time)
             if self.visualizer.handle_window_events():
                 return  # Stop the simulation
-
-        for station in self.all_stations:
-            self.all_stations[station].check_end_bikes()
         return
 
     def _update_active_rides(self, time: datetime) -> None:
@@ -105,11 +102,16 @@ class Simulation:
             period but ends during or after the simulation's time period,
             it should still be added to self.active_rides.
         """
+
         for ride in self.all_rides:
-            if ride.start_time <= time <= ride.end_time:
+            if (ride.start_time <= time <= ride.end_time) and \
+                    (ride not in self.active_rides):
                 self.active_rides.append(ride)
-            else:
+                ride.start.num_bikes_start += 1
+        for ride in self.active_rides:
+            if time > ride.end_time:
                 self.active_rides.remove(ride)
+                ride.end.num_bikes_end += 1
 
         for bike in self.active_rides:
             if time == bike.start_time:
@@ -123,7 +125,10 @@ class Simulation:
                 else:
                     self.active_rides.remove(bike)
 
-    def _find_max (self, value: str):
+    def _find_max(self, value: str):
+        """Helper function to find the stations with the maximum of the queried
+        attribute
+        """
         stations = self.all_stations
         maximum = ('', 0)
 
@@ -168,9 +173,9 @@ class Simulation:
 
         max_start = self._find_max('num_bikes_start')
         max_end = self._find_max('num_bikes_end')
-        max_time_low_availability = self._find_max('total_time_low_availability')
+        max_time_low_availability = \
+            self._find_max('total_time_low_availability')
         max_time_low_unoccupied = self._find_max('total_time_low_unoccupied')
-
 
         return {
             'max_start': max_start,
@@ -188,7 +193,6 @@ class Simulation:
         REQUIRED IMPLEMENTATION NOTES:
         -   see Task 5 of the assignment handout
         """
-        
 
 
 def create_stations(stations_file: str) -> Dict[str, 'Station']:
@@ -314,6 +318,7 @@ def sample_simulation() -> Dict[str, Tuple[str, float]]:
 if __name__ == '__main__':
     # Uncomment these lines when you want to check your work using python_ta!
     import python_ta
+
     python_ta.check_all(config={
         'allowed-io': ['create_stations', 'create_rides'],
         'allowed-import-modules': [
