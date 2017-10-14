@@ -39,6 +39,8 @@ class Simulation:
         A dictionary containing all the stations in this simulation.
     visualizer:
         A helper class for visualizing the simulation.
+    active_rides:
+        A list of all rides currently active
     """
     all_stations: Dict[str, Station]
     all_rides: List[Ride]
@@ -108,21 +110,27 @@ class Simulation:
         """
 
         for ride in self.all_rides:
+            # Only take into account ride that happen during the simulation
+            # bracket
             if (ride.start_time <= time <= ride.end_time) and \
                     (ride not in self.active_rides):
                 self.active_rides.append(ride)
                 ride.start.num_bikes_start += 1
         for ride in self.active_rides:
+            # Remove a ride from active rides if the ride is over
             if time > ride.end_time:
                 self.active_rides.remove(ride)
                 ride.end.num_bikes_end += 1
 
         for bike in self.active_rides:
+            # If a ride starts, remove a bike from its start station
             if time == bike.start_time:
                 if bike.start.num_bikes > 0:
                     bike.start.num_bikes -= 1
                 else:
                     self.active_rides.remove(bike)
+            # If a ride is over, add a bike to its en station and remove it
+            # from active rides
             if time == bike.end_time:
                 if bike.end.capacity > bike.end.num_bikes:
                     bike.end.num_bikes += 1
@@ -147,6 +155,8 @@ class Simulation:
             elif value == 'total_time_low_unoccupied':
                 station_attribute = stations[key].total_time_low_unoccupied
 
+            # Find maximum value by replacing maximum if the station has a
+            # higher value
             if station_attribute > maximum[1]:
                 maximum = (stations[key].name, station_attribute)
             elif station_attribute == maximum[1]:
@@ -184,8 +194,6 @@ class Simulation:
 
         return {
             'max_start': max_start,
-            # 'max_end': (stations_lst[stations_lst.index(max_end)],
-            #               max_end),
             'max_end': max_end,
             'max_time_low_availability': max_time_low_availability,
             'max_time_low_unoccupied': max_time_low_unoccupied
