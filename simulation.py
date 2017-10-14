@@ -52,7 +52,7 @@ class Simulation:
         self.all_rides = create_rides(ride_file, self.all_stations)
         self.visualizer = Visualizer()
         self.active_rides = []
-        self.ride_priority_queue
+        self.ride_priority_queue = PriorityQueue()
 
     def run(self, start: datetime, end: datetime) -> None:
         """Run the simulation from <start> to <end>.
@@ -64,9 +64,11 @@ class Simulation:
         # it by pressing the 'X'.
         time = start
 
-        # for ride in self.all_rides:
-        #     if start < ride.start_time < end:
-        #         ride_priority_queue.add(RideStartEvent(self, ride.time, ride))
+        for ride in self.all_rides:
+            if start < ride.start_time < end:
+                self.ride_priority_queue.add(RideStartEvent(self,
+                                                            ride.start_time,
+                                                            ride))
 
         while time < end:
             time += step
@@ -193,6 +195,16 @@ class Simulation:
         REQUIRED IMPLEMENTATION NOTES:
         -   see Task 5 of the assignment handout
         """
+        p_queue = self.ride_priority_queue
+        while not p_queue.is_empty():
+            event = p_queue.remove()
+            if time < event.time:
+                p_queue.add(event)
+                return
+            else:
+                queued_events = event.process()
+                for queued_event in queued_events:
+                    p_queue.add(queued_event)
 
 
 def create_stations(stations_file: str) -> Dict[str, 'Station']:
@@ -289,23 +301,33 @@ class Event:
 
 class RideStartEvent(Event):
     """An event corresponding to the start of a ride."""
-    def __init__(self, simulation: 'Simulation', time: datetime, ride: 'Ride') -> None:
-        Event.__init__(simulation, time)
+
+    def __init__(self, simulation: 'Simulation', time: datetime, ride: 'Ride') \
+            -> None:
+        Event.__init__(self, simulation, time)
         self.ride = ride
 
     def process(self) -> List['Event']:
-        simulation.active_rides.append(self)
-        return RideEndEvent(simulation, self.ride.end_time, self.ride)
+        """Function that processes the event"""
+        self.simulation.active_rides.append(self.ride)
+        self.ride.start.num_bikes_start += 1
+        return [RideEndEvent(self.simulation, self.ride.end_time, self.ride)]
+
 
 class RideEndEvent(Event):
     """An event corresponding to the start of a ride."""
-    def __init__(self, simulation: 'Simulation', time: datetime, ride: 'Ride') -> None:
-        Event.__init__(simulation, time)
+
+    def __init__(self, simulation: 'Simulation', time: datetime, ride: 'Ride') \
+            -> None:
+        Event.__init__(self, simulation, time)
         self.ride = ride
 
     def process(self) -> List['Event']:
-        simulation.active_rides.remove(self)
+        """Function that processes the event"""
+        self.simulation.active_rides.remove(self.ride)
+        self.ride.end.num_bikes_end += 1
         return []
+
 
 def sample_simulation() -> Dict[str, Tuple[str, float]]:
     """Run a sample simulation. For testing purposes only."""

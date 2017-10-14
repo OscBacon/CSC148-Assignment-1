@@ -73,9 +73,8 @@ class PriorityQueue(Container[T]):
 
         NOTE: See the docstring for the 'remove' method for a sample doctest.
         """
-        # TODO: Implement this method!
         for index, event in enumerate(self._queue):
-            if item > event:
+            if event < item:
                 self._queue.insert(index, item)
                 return
         self._queue.append(item)
