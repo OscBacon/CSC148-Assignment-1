@@ -48,6 +48,7 @@ Temporary Items
 
 # Py Cache
 __pycache__
+cache
 
 #PyTa output
 output.html
