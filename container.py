@@ -77,7 +77,8 @@ class PriorityQueue(Container[T]):
             if event < item:
                 self._queue.insert(index, item)
                 return
-        self._queue.append(item)
+        else:
+            self._queue.append(item)
 
     def remove(self) -> T:
         """Remove and return the next item from this PriorityQueue.
