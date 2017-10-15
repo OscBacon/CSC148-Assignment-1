@@ -41,11 +41,14 @@ class Simulation:
         A helper class for visualizing the simulation.
     active_rides:
         A list of all rides currently active
+    ride_priority_queue:
+        A priority queue for events in the simulation
     """
     all_stations: Dict[str, Station]
     all_rides: List[Ride]
     visualizer: Visualizer
     active_rides: List[Ride]
+    ride_priority_queue: PriorityQueue()
 
     def __init__(self, station_file: str, ride_file: str) -> None:
         """Initialize this simulation with the given configuration settings.
@@ -285,6 +288,11 @@ class Event:
     """An event in the bike share simulation.
 
     Events are ordered by their timestamp.
+    === Attributes ===
+    simulation:
+        The simulation that the event happens in
+    time:
+        The time that the event happens
     """
     simulation: 'Simulation'
     time: datetime
@@ -310,7 +318,13 @@ class Event:
 
 
 class RideStartEvent(Event):
-    """An event corresponding to the start of a ride."""
+    """An event corresponding to the start of a ride.
+
+    subclass of event, inherits all Attributes
+    === Attributes ===
+    ride:
+        The ride that is starting when this event is called
+    """
 
     def __init__(self, simulation: 'Simulation', time: datetime, ride: 'Ride') \
             -> None:
@@ -326,7 +340,13 @@ class RideStartEvent(Event):
 
 
 class RideEndEvent(Event):
-    """An event corresponding to the start of a ride."""
+    """An event corresponding to the start of a ride.
+
+    Subclass of event, inherits all it's attributes.
+    === Attributes ===
+    ride:
+        The ride that is ending when this event is called
+    """
 
     def __init__(self, simulation: 'Simulation', time: datetime, ride: 'Ride') \
             -> None:
