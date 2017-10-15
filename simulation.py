@@ -89,7 +89,6 @@ class Simulation:
             # if self.visualizer.handle_window_events():
             #    return  # Stop the simulation
 
-
     def _update_active_rides(self, time: datetime) -> None:
         """Update this simulation's list of active rides for the given time.
 
