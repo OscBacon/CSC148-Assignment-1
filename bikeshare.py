@@ -71,9 +71,9 @@ class Station(Drawable):
     === Representation Invariants ===
     - 0 <= num_bikes <= capacity
     """
-    name: str
     location: Tuple[float, float]
     capacity: int
+    name: str
     num_bikes: int
     num_bikes_start: int
     num_bikes_end: int

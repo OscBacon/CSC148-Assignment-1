@@ -78,7 +78,6 @@ class PriorityQueue(Container[T]):
                 self._queue.insert(index, item)
                 return
         self._queue.append(item)
-        return
 
     def remove(self) -> T:
         """Remove and return the next item from this PriorityQueue.
