@@ -64,9 +64,6 @@ class Simulation:
         """
         step = timedelta(minutes=1)  # Each iteration spans one minute of time
 
-        # Leave this code at the very bottom of this method.
-        # It will keep the visualization window open until you close
-        # it by pressing the 'X'.
         time = start
 
         for ride in self.all_rides:
@@ -118,26 +115,28 @@ class Simulation:
                     (ride not in self.active_rides):
                 self.active_rides.append(ride)
                 ride.start.num_bikes_start += 1
+
         for ride in self.active_rides:
             # Remove a ride from active rides if the ride is over
             if time > ride.end_time:
                 self.active_rides.remove(ride)
                 ride.end.num_bikes_end += 1
 
-        for bike in self.active_rides:
+        for ride in self.active_rides:
             # If a ride starts, remove a bike from its start station
-            if time == bike.start_time:
-                if bike.start.num_bikes > 0:
-                    bike.start.num_bikes -= 1
+            if time == ride.start_time:
+                if ride.start.num_bikes > 0:
+                    ride.start.num_bikes -= 1
                 else:
-                    self.active_rides.remove(bike)
+                    self.active_rides.remove(ride)
+
             # If a ride is over, add a bike to its en station and remove it
             # from active rides
-            if time == bike.end_time:
-                if bike.end.capacity > bike.end.num_bikes:
-                    bike.end.num_bikes += 1
+            if time == ride.end_time:
+                if ride.end.capacity > ride.end.num_bikes:
+                    ride.end.num_bikes += 1
                 else:
-                    self.active_rides.remove(bike)
+                    self.active_rides.remove(ride)
 
     def _find_max(self, value: str):
         """Helper function to find the stations with the maximum of the queried
@@ -383,7 +382,6 @@ def sample_simulation() -> Dict[str, Tuple[str, float]]:
 if __name__ == '__main__':
     # Uncomment these lines when you want to check your work using python_ta!
     # import python_ta
-    #
     # python_ta.check_all(config={
     #     'allowed-io': ['create_stations', 'create_rides'],
     #     'allowed-import-modules': [
