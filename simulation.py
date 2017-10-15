@@ -245,9 +245,16 @@ def create_stations(stations_file: str) -> Dict[str, 'Station']:
         # NOTE: all of the corresponding values are strings, and so you
         # need to convert some of them to numbers explicitly using int()
         # or float().
-        stations[s['n']] = Station((float(s['lo']), float(s['la'])),
-                                   int(s['ba']) + int(s['da']), int(s['da']),
-                                   s['s'])
+
+        _id = s['n']
+        longitude = float(s['lo'])
+        latitude = float(s['la'])
+        capacity = int(s['ba']) + int(s['da'])
+        num_bikes = int(s['da'])
+        name = s['s']
+
+        stations[_id] = Station((longitude, latitude), capacity, num_bikes,
+                                name)
     return stations
 
 
@@ -277,10 +284,14 @@ def create_rides(rides_file: str,
             # datetime.datetime(2017, 6, 1, 8, 0)
 
             if line[1] in stations and line[3] in stations:
-                rides.append(Ride(stations[line[1]], stations[line[3]],
-                                  (datetime.strptime(line[0], DATETIME_FORMAT),
-                                   datetime.strptime(line[2],
-                                                     DATETIME_FORMAT))))
+                start_station = stations[line[1]]
+                end_station = stations[line[3]]
+                start_time = datetime.strptime(line[0], DATETIME_FORMAT)
+                end_time = datetime.strptime(line[2], DATETIME_FORMAT)
+
+                rides.append(Ride(start_station, end_station,
+                                  (start_time, end_time)))
+
     return rides
 
 
